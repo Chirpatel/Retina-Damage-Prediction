@@ -1,0 +1,47 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict</title>
+</head>
+<body>
+    <input id="image-selector" type="file">
+    <button id="predict-button">Predict</button>
+    <p style="font-weight:bold">Prediction</p>
+    <p>Prediction: <span id="d-prediction"></span></p>
+
+    <img id="selected-image" src="" alt=""/>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
+<script>
+
+let base64Image;
+$("#image-selector").change(function(){
+    let reader = new FileReader();
+    reader.onload = function(e){
+        let dataURL = reader.result;
+        
+        base64Image = dataURL.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+        $("#selected-image").attr("src",`data:image/png;base64,${base64Image}`);
+    }
+    
+    reader.readAsDataURL($("#image-selector")[0].files[0]);
+    $("d-prediction").text("");
+});
+
+$("#predict-button").click(function(event){
+    let message = {
+        image: base64Image
+    }
+    console.log(message);
+
+    $.post("https://eye-disease-prediction.chir0313.repl.co/",JSON.stringify(message), function(response){
+        $("#d-prediction").text(response.prediction);
+        console.log(response);
+    });
+});
+
+</script>
+
+
+</body>
+</html>

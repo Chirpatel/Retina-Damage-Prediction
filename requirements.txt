@@ -1,8 +1,6 @@
 imageio
 flask
-base64
 numpy
-io
 keras
 tensorflow
 matplotlib

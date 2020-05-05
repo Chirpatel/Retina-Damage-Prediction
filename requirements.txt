@@ -4,4 +4,4 @@ numpy
 keras
 tensorflow
 matplotlib
-skimage
+scikit-image

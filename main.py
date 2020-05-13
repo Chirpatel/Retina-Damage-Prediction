@@ -1,6 +1,6 @@
 import os
-#os.system('pip install --upgrade pip')
-#os.system('pip install tensorflow==2.2.0rc4')
+os.system('pip install --upgrade pip')
+os.system('pip install tensorflow==2.2.0rc4')
 
 import random, string
 from flask import Flask, render_template, request, jsonify

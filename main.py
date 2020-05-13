@@ -1,5 +1,5 @@
 import os
-os.system('pip install --upgrade pip')
+#os.system('pip install --upgrade pip')
 #os.system('pip install tensorflow==2.2.0rc4')
 
 import random, string
@@ -20,7 +20,7 @@ import matplotlib.image as mpimg
 from skimage.io import imread
 from skimage.transform import resize
 import shutil
-
+import cv2
 app = Flask(  # Create a flask app
 	__name__,
 	template_folder='templates',  # Name of html file folder
@@ -37,15 +37,10 @@ def base_page():
 	)
 
 
-#tf.compat.v1.enable_eager_execution()
-
-#graph = tf.compat.v1.get_default_graph()
-#sess = tf.compat.v1.Session()
-#tf.compat.v1.keras.backend.set_session(sess)
 model=0
 def get_model():
     global model
-    model = keras.models.load_model("Model_1_epoch_3.model")
+    model = keras.models.load_model("model_3000trained10.model")
     print(" * Model Loded!")
 
 def preprocess_image(image):
@@ -64,7 +59,6 @@ def predict():
     #print(message)
     
     encoded = message['image']
-    #image = Image.fromstring('RGB',(250,250),io.BytesIO(base64.b64encode(encoded)))
     decoded = base64.b64decode(encoded)
     bytesio=io.BytesIO(decoded)
     filename="test.png"
@@ -73,21 +67,24 @@ def predict():
         outfile.write(bytesio.getbuffer())
     num=find()
     response = {
-        'prediction': str(CATEGORIES[num])
+        'prediction': str(num[0]),
+				'prob': str(num[1])
     }
     return jsonify(response)
 
 def find():
-	#global graph
-	#global sess
-	#with graph.as_default():
-		#with sess.as_default():
+
 	CATEGORIES=["NORMAL","CNV","DME","DRUSEN"]
-	test=(np.array([resize(imread("test.png"),(256,256,3))]))
-	prediction = model.predict(test)
-	num=np.argmax(prediction[0])
-	print(num)
-	return  num
+
+	image=imread("test.png")
+	img = np.asarray(image,dtype=np.uint8)
+	img = cv2.resize(img,(128,128))
+	img = img.reshape(1,128,128,1)
+	classIndex = int(model.predict_classes(img))
+	predictions = model.predict(img)
+	probVal= np.amax(predictions)
+	print(CATEGORIES[classIndex],probVal)
+	return  [CATEGORIES[classIndex],probVal]
 
 
 

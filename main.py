@@ -1,6 +1,6 @@
 import os
-os.system('pip install --upgrade pip')
-os.system('pip install tensorflow==2.2.0rc4')
+#os.system('pip install --upgrade pip')
+#os.system('pip install tensorflow==2.2.0rc4')
 
 import random, string
 from flask import Flask, render_template, request, jsonify
@@ -63,7 +63,6 @@ def predict():
     bytesio=io.BytesIO(decoded)
     filename="test.png"
     with open(filename, "wb") as outfile:
-        # Copy the BytesIO stream to the output file
         outfile.write(bytesio.getbuffer())
     num=find()
     response = {
@@ -73,16 +72,14 @@ def predict():
     return jsonify(response)
 
 def find():
-
 	CATEGORIES=["NORMAL","CNV","DME","DRUSEN"]
-
 	image=imread("test.png")
 	img = np.asarray(image,dtype=np.uint8)
 	img = cv2.resize(img,(128,128))
 	img = img.reshape(1,128,128,1)
 	classIndex = int(model.predict_classes(img))
 	predictions = model.predict(img)
-	probVal= np.amax(predictions)
+	probVal= np.amax(predictions)*100
 	print(CATEGORIES[classIndex],probVal)
 	return  [CATEGORIES[classIndex],probVal]
 

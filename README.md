@@ -1,6 +1,8 @@
 # Retinal-Damage-Prediction
 
-[Retinal Damage Prediction](https://repl.it/@Chir0313/Eye-Disease-Prediction)
+[Retinal Damage Prediction (Heroku)](https://retinal-damage-prediction.herokuapp.com/)
+
+[Retinal Damage Prediction (Repl.it)](https://repl.it/@Chir0313/Eye-Disease-Prediction)
 
 Prediction: NORMAL, CNV, DME, DRUSEN
 

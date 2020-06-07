@@ -2,7 +2,7 @@
 
 [Retinal Damage Prediction (Heroku)](https://retinal-damage-prediction.herokuapp.com/)
 
-[Retinal Damage Prediction (Repl.it)](https://repl.it/@Chir0313/Eye-Disease-Prediction)
+[Retinal Damage Prediction (Kaggle Notebook)](https://www.kaggle.com/chir0313/oct-retinal-damage-prediction-99-accuracy)
 
 Prediction: NORMAL, CNV, DME, DRUSEN
 

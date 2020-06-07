@@ -1,6 +1,1 @@
-imageio
-flask
-numpy
-keras
-matplotlib
 scikit-image

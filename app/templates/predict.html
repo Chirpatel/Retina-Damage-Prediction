@@ -1,0 +1,74 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Predict</title>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark">
+  <span class="navbar-brand mb-0 h1">Retinal Damage Prediction</span>
+</nav>
+  <div style="margin:10px; width:330px;" class="custom-file">
+    <input  type="file" class="custom-file-input" id="image-selector" aria-describedby="inputGroupFileAddon04">
+    <label id="label" class="custom-file-label" for="inputGroupFile04">Choose file</label>
+    </div>
+  <div  class="input-group-append">
+    <button style="margin:10px;" class="btn btn-outline-primary" type="button" id="predict-button">Predict</button>
+    <a target="_blank" href="https://www.kaggle.com/paultimothymooney/kermany2018"><button style="margin:10px;" class="btn btn-outline-primary" type="button" >Dataset</button></a>
+  </div>
+    <p style="margin:10px;">Prediction: <span id="d-prediction"></span></p>
+
+    <img style="margin:10px; width:330px; visibility:hidden;" id="selected-image" src="" alt="" class="img-thumbnail rounded float-left" />
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" ></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<script>
+var file = document.getElementById("image-selector");
+
+file.addEventListener("change", function() {
+    for (var i = 0; i < file.files.length; i++) {
+        console.log(file.files[i].name,"#");
+        document.getElementById("label").innerText=file.files[i].name;
+    }
+    
+}, false);
+let base64Image;
+$("#image-selector").change(function(){
+    let reader = new FileReader();
+    reader.onload = function(e){
+        let dataURL = reader.result;
+        
+        base64Image = dataURL.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+				document.getElementById('selected-image').style.visibility='visible'
+        $("#selected-image").attr("src",`data:image/png;base64,${base64Image}`);
+    }
+    
+    reader.readAsDataURL($("#image-selector")[0].files[0]);
+    $("d-prediction").text("");
+});
+
+$("#predict-button").click(function(event){
+  $("d-prediction").text("");
+	if (document.getElementById("label").innerText=="Choose file"){
+		alert('Select an Image to Predict');
+	}
+	else{
+    let message = {
+        image: base64Image
+    }
+    console.log(message);
+
+    $.post("https://retinal-damage-prediction.herokuapp.com/",JSON.stringify(message), function(response){
+        $("#d-prediction").text(response.prediction+" ("+parseFloat(response.prob).toFixed(2)+"%)");
+        console.log(response);
+    });
+	}
+});
+
+</script>
+
+
+</body>
+</html>

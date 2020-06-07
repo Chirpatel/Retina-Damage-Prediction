@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+opencv-python-headless = "*"
+imageio = "*"
+Flask = "*"
+numpy = "*"
+Keras = "*"
+matplotlib = "*"
+flask = "*"
+gunicorn = "*"
+tensorflow = "==1.14.0"
+
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
